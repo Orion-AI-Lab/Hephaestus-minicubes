@@ -1,0 +1,6 @@
+{
+    "backbone": "resnext50_32x4d",
+    "pretrained": true,
+    "encoder_weights": "imagenet",
+    "freeze_encoder": false // Percentage of encoder to freeze
+}

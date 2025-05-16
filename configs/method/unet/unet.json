@@ -1,0 +1,5 @@
+{
+    "backbone": "resnet18",
+    "pretrained": true,
+    "encoder_weights": "imagenet"
+}

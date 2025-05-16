@@ -1,0 +1,48 @@
+{
+  "wandb_project": "",
+  "wandb_entity": "",
+  "seed": 333,
+  "task": "classification",  // One of "classification", "segmentation"
+  "num_classes": 2,
+  "mixed_precision": false,
+  "annotation_path": "/mnt/shared_storage/npapadopoulos/datasets/Hephaestus_annotations/annotations/", // Full annotation path
+  "zarr_path": "/mnt/shared_storage/npapadopoulos/datasets/Hephaestus_Zarr_v2/", // Zarr annotation path
+  "webdataset_root": "/mnt/shared_storage/masdra/Hephaestus_Webdatasets_test/webdatasets/", // Webdataset path
+  "timeseries": true, // true for timeseries, else false
+  "timeseries_length": 3, // The length of the number of samples in the timeseries. Optimal is 3. For 1 the dataset is not processed as timeseries.
+  "mask_target": "union", // One of 'last', 'peak', 'all', 'union'.
+  "timeseries_ordering": "primary", // Processing the data as timeseries sorted on primary_date and secondary_date respectively for ['primary', 'secondary']
+  "timeseries_data": "dataset/quality_timeseries.json",
+  "statistics": "statistics.json",
+  "batch_size": 2,
+  "num_workers": 4,
+  "device": "cuda:0",
+  "lr": 1e-5,
+  "lr_decay": false,
+  "weight_decay": 1e-4,
+  "gradient_clip": null, // Gradient clipping value. None for no clipping
+  "epochs": 90,
+  "early_stopping": null, // Number of epochs of no improvement for early stopping. None for no early stopping
+  "architecture": "resnet50",
+  "model_backbone": null,  // The backbone to use. Must be one of those available in segmentation-models-pytorch (`resnet18, resnet50, resnext50`)
+  "loss_criterion": "FocalLoss", // One of 'CrossEntropyLoss', 'FocalLoss'
+  "loss_with_confidence": false, // Whether to use the annotator confidence in the loss
+  "weighted_loss": false, // Weighted loss for class imbalance and CrossEntropyLoss
+  "multilabel": false, // For metric construction. Training is mainly built for multilabel
+  "augment": false, // Wheter to augment for supervised training
+  "metric_strategy": "none", // none to get per class metrics
+  "geomorphology_channels": ["insar_difference", "insar_coherence", "dem"],
+  "atmospheric_channels": ["total_column_water_vapour", "surface_pressure", "vertical_integral_of_temperature"],
+  "image_size": 512, // How to resize the frame
+  "train_years": ["20140101", "20190531"], // Range of dates
+  "val_years": ["20190601", "20191231"], // Range of dates
+  "test_years": ["20200101", "20211231"], // Range of dates
+  "webdataset": true, // Whether to use webdataset
+  "webdataset_write_processes": 4, // Number of processes to write the webdataset
+  "max_samples_per_shard": 128, // Maximum number of samples per shard
+  "webdataset_shuffle_size": 100, // Shuffle size for the webdataset
+  "patch_size": 512,  // The patch size - dictates how to split the frame when creating the webdataset
+  "prefetch_factor": 2, // Prefetch factor for the dataloader
+  "persistent_workers": false, // Persistent workers for the dataloader
+  "webdataset_initial_buffer": 300,// Initial buffer size for the webdataset
+}

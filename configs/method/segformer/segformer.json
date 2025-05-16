@@ -1,0 +1,6 @@
+{
+    "backbone": "resnet18",
+    "encoder_depth": 4, // From 1024*1024 image to 32*32 feature map
+    "encoder_weights": "imagenet",
+    "activation": "softmax"
+}

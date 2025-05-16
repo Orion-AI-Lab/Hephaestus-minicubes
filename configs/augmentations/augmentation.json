@@ -1,0 +1,40 @@
+{
+    "augmentations": {
+        "GaussianBlur": {
+            "value": [
+                0.1,
+                2.0
+            ],
+            "p": 0.3
+        },
+        "RandomResizedCrop": {
+            "scale":[0.2, 1.0],
+            "interpolation":1,
+            "p": 0.3
+        },
+        "HorizontalFlip": {
+            "value": "",
+            "p": 0.3
+        },
+        "VerticalFlip": {
+            "value": "",
+            "p": 0.3
+        },
+        "RandomRotation":{
+            "p":0.6
+        },
+        "ElasticTransform": {
+            "value": "",
+            "p": 0.0
+        },
+        "Cutout": {
+            "p": 0.0
+        },
+        "MultNoise": {
+            "p": 0.0
+        },
+        "GaussianNoise": {
+            "p": 0.0
+        }
+    }
+}
