@@ -11,6 +11,11 @@ This is the official repository for `Hephaestus Minicubes` (submitted in NeurIPS
 
 The dataset covers **38 volcanoes worldwide**, in 6 out of 7 continents. Annotations have been produced by a SAR/InSAR expert through meticulous **photointerpretation**, and offer rich insights on the **deformation type** (sill, dyke, mogi, spheroid, earthquake), the **intensity level** (low, medium, high), the presence of **non-volcanic related fringes** (atmospheric, orbital, glacier) as well as the **volcanic activity phase** (rest, unrest, rebound). Each sample also contains a **text description** of the observed phenomena, ideal for language-based machine learning modelling.
 
+
+You can explore a sample minicube from the dataset and investigate its structure and available annotation variables using the interactive Google Colab notebook below:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1NeVtXEqrAawe0ICw1prMJSuFdHPHOqlg)
+
 ## Download the dataset
 Follow these steps to download and decompress the dataset:
 
