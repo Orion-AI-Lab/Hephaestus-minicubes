@@ -570,7 +570,7 @@ def create_webdataset_loaders(configs, repeat=False, resample_shards=False):
             image = image[:, selected_channels, :, :]  # Keep only the selected channels
 
             if configs["augment"] == True:
-                data_augmentations = augmentations.get_augmentations(configs, configs['image_size'], configs['seed'])
+                data_augmentations = augmentations.get_augmentations(configs, configs['image_size'])
                 image, label = augment(data_augmentations, image, label)
 
             image = normalize(image, configs)
@@ -807,3 +807,65 @@ def random_samples(sources, probs=None, longest=False):
                 del probs[i]
             else:
                 break
+
+def produce_variable_figures_from_tensor(var_tensor, var_names, info=None, root_path="DEBUG_WEBDATASET"):
+    """
+    Plot each variable in var_tensor and save as image.
+
+    Parameters:
+    - var_tensor: Tensor or np.array of shape (num_vars, H, W)
+    - var_names: List of variable names matching the first dim of var_tensor
+    - info: Optional dict for metadata (e.g., insar_path, frame_id)
+    - root_path: Where to save plots
+    """    
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    if hasattr(var_tensor, "numpy"):  # Handle PyTorch tensor
+        var_tensor = var_tensor.detach().cpu().numpy()
+
+    num_vars = var_tensor.shape[1]
+    cols = 2
+    rows = (num_vars + 1) // cols
+
+    fig, axes = plt.subplots(rows, cols, figsize=(6 * cols, 5 * rows))
+    axes = axes.flatten()
+
+    cmap = sns.color_palette("Spectral_r", as_cmap=True)
+
+    if info:
+        meta = f"Frame: {info.get('frame_id', 'unknown')}"
+    else:
+        meta = "No info provided"
+
+    for t in range(var_tensor.shape[0]):
+        fig, axes = plt.subplots(rows, cols, figsize=(6 * cols, 5 * rows))
+        axes = axes.flatten()
+        
+        fig.suptitle(f"Variable Visualization\n{meta}", fontsize=14)
+        plt.subplots_adjust(bottom=0.1, top=0.88, hspace=0.5, wspace=0.4)
+        
+        for i in range(len(var_names)):
+            ax = axes[i]
+            data = var_tensor[t, i, :, :].squeeze()
+            vmin, vmax = np.nanmin(data), np.nanmax(data)
+            img = ax.imshow(data, cmap=cmap, vmin=vmin, vmax=vmax)
+            ax.set_title(var_names[i])
+            ax.axis("off")
+        
+            # Add individual colorbar
+            cbar_ax = fig.add_axes([ax.get_position().x1 + 0.01, ax.get_position().y0, 0.02, ax.get_position().height])
+            fig.colorbar(img, cax=cbar_ax, orientation='vertical')
+        
+        # Hide extra subplots
+        for j in range(len(var_names), len(axes)):
+            axes[j].axis("off")
+        
+        # Save
+        try:
+            save_path = os.path.join(root_path, str(info.get("frame_id", "unknown")) if info else root_path)
+            os.makedirs(save_path, exist_ok=True)
+            filename = f"{t}_tensor_vars.png"
+            plt.savefig(os.path.join(save_path, filename))
+            plt.close(fig)  # close this specific figure
+        except Exception as e:
+            print(f"Failed to save figure: {e}")

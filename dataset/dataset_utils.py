@@ -574,6 +574,10 @@ class InSarDataset(torch.utils.data.Dataset):
             print(f"KeyError: {e}")
             exit()
             return None
+        
+        # Include Earthquake as a 1 label
+        deformation_mask = insar_timeseries["deformation_mask"]
+        deformation_mask.values = np.where(deformation_mask.values == 2, 1, deformation_mask.values)
 
         if np.unique(insar_timeseries["deformation_mask"].values).all() not in [0, 1]:
             print(sample)
